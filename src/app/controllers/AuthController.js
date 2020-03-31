@@ -1,3 +1,10 @@
+/**
+ * javascript comment
+ * @Author: kidiatoliny
+ * @Date: 2020-03-31 19:26:43
+ * @Desc:  The login and register routes are controlled from this controller
+ */
+
 const { User } = require('./../models')
 const jwt = require('jsonwebtoken')
 class AuthController {

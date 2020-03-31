@@ -1,5 +1,6 @@
 const express = require('express')
 const bodyParser = require('body-parser')
+router = require('./router')
 
 require('dotenv').config({
 	// eslint-disable-next-line no-undef
@@ -20,7 +21,7 @@ class App {
 	}
 
 	routes() {
-		this.express.use(require('./routes'))
+		this.express.use(router)
 	}
 }
 

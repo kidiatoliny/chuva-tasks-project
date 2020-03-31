@@ -1,3 +1,9 @@
+/**
+ * javascript comment
+ * @Author: kidiatoliny
+ * @Date: 2020-03-31 19:25:04
+ * @Desc: database configuration for PostgresSQL
+ */
 require('dotenv').config({
 	path: process.env.NODE_ENV === 'test' ? '.env.test' : '.env',
 })
