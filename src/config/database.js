@@ -1,26 +1,19 @@
-{
-  "development": {
-    "username": "root",
-    "password": null,
-    "database": "database_development",
-    "host": "127.0.0.1",
-    "dialect": "mysql",
-    "operatorsAliases": false
-  },
-  "test": {
-    "username": "root",
-    "password": null,
-    "database": "database_test",
-    "host": "127.0.0.1",
-    "dialect": "mysql",
-    "operatorsAliases": false
-  },
-  "production": {
-    "username": "root",
-    "password": null,
-    "database": "database_production",
-    "host": "127.0.0.1",
-    "dialect": "mysql",
-    "operatorsAliases": false
-  }
+require('dotenv').config({
+	path: process.env.NODE_ENV === 'test' ? '.env.test' : '.env',
+})
+
+module.exports = {
+	dialect: process.env.DB_DIALECT || 'postgres',
+	host: process.env.DB_HOST,
+	port: process.env.DB_PORT,
+	username: process.env.DB_USER || 'postgres',
+	password: process.env.DB_PASSWORD,
+	database: process.env.DB_NAME,
+	storage: './src/tests/database.sqlite',
+	logging: false,
+	define: {
+		timestamps: true,
+		underscored: true,
+		underscoredAll: true,
+	},
 }
