@@ -1,8 +1,8 @@
 const routes = require('express').Router()
 const AuthController = require('./app/controllers/AuthController')
-const authMiddleware = require('./app/middlewares')
+const authMiddleware = require('./app/middlewares/auth')
 routes.post('/auth/register', AuthController.register)
-//routes.post('/auth/login', AuthController.login)
+routes.post('/auth/login', AuthController.login)
 
 routes.use(authMiddleware)
 routes.get('/dashboard', (req, res) => {
