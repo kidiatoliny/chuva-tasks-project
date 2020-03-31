@@ -1,7 +1,7 @@
 const request = require('supertest')
 const app = require('../../app')
 const bcrypt = require('bcryptjs')
-const { User } = require('../../app/models')
+const factory = require('./../../helppers/factory')
 const truncate = require('./../../helppers/truncate')
 describe('Register', () => {
 	beforeEach(async () => {
@@ -41,11 +41,7 @@ describe('Register', () => {
 		expect(response.status).toBe(400)
 	})
 	it('should encrypt the user password', async () => {
-		const user = await User.create({
-			name: 'kid',
-			email: 'kid@kid.com',
-			password: '123456',
-		})
+		const user = await factory.create('User')
 		const response = await request(app)
 			.post('/auth/register')
 			.send({
@@ -60,11 +56,7 @@ describe('Register', () => {
 	})
 
 	it('should return code 401 if the email is registered', async () => {
-		const user = await User.create({
-			name: 'kid',
-			email: 'kid@kid.com',
-			password: '123456',
-		})
+		const user = await factory.create('User')
 		const response = await request(app)
 			.post('/auth/register')
 			.send({
@@ -76,11 +68,7 @@ describe('Register', () => {
 		expect(response.status).toBe(401)
 	})
 	it('should not be able to access private routes without', async () => {
-		const user = await User.create({
-			name: 'kid',
-			email: 'kid@kid.com',
-			password: '12345',
-		})
+		const user = await factory.create('User')
 		const response = await request(app)
 			.get('/dashboard')
 			.set('Authorization', `Bearer ${user.generateToken()}`)
