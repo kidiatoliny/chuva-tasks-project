@@ -1,6 +1,8 @@
 const jwt = require('jsonwebtoken')
+var app = require('./../../app')
 module.exports = async (req, res, next) => {
 	const authHeader = req.headers.authorization
+
 	if (!authHeader) return res.status(401).send({ error: 'Token not provided' })
 
 	const [, token] = authHeader.split(' ')
