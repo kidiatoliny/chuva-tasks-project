@@ -1,3 +1,9 @@
+/**
+ * javascript comment
+ * @Author: kidiatoliny
+ * @Date: 2020-04-01 04:43:42
+ * @Desc:This middleware is use to prevente unauthenticated user to navigate to privates routes
+ */
 const jwt = require('jsonwebtoken')
 var app = require('./../../app')
 module.exports = async (req, res, next) => {
@@ -7,14 +13,10 @@ module.exports = async (req, res, next) => {
 
 	const [, token] = authHeader.split(' ')
 	try {
-		const decode = await promisify(jwt.verify)(
-			token,
-			process.eventNames().APP_SECRET,
-			(req.userId = decode.ids),
-		)
-		return next
-	} catch (error) {
+		const decode = await promisify(jwt.verify)(token, process.env.APP_SECRET)
+		req.userId = decode.id
+		return next()
+	} catch (err) {
 		return res.status(401).send({ error: 'Token Invalid' })
 	}
-	return next()
 }

@@ -49,12 +49,4 @@ describe('Login', () => {
 		expect(response.body).toHaveProperty('token')
 		expect.assertions(2)
 	})
-
-	it('should not be able to access private routes without jwt token valid', async () => {
-		const response = await request(app)
-			.get('/dashboard')
-			.set('Authorization', `Bearer 12313123`)
-
-		expect(response.status).toBe(401)
-	})
 })
