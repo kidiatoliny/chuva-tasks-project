@@ -9,17 +9,27 @@ module.exports = (sequelize, DataTypes) => {
 	const Project = sequelize.define(
 		'Project',
 		{
-			title: DataTypes.STRING,
-			description: DataTypes.STRING,
-			user_id: DataTypes.STRING,
-			status: DataTypes.STRING,
+			title: {
+				type: DataTypes.STRING,
+				notEmpty: true,
+			},
+			description: {
+				type: DataTypes.TEXT,
+				notEmpty: true,
+			},
+			status: DataTypes.BOOLEAN,
 			start: DataTypes.DATE,
 			end: DataTypes.DATE,
 		},
 		{},
 	)
 	Project.associate = function(models) {
-		// associations can be defined here
+		this.belongsTo(models.User, { foreignKey: 'user_id', as: 'user' })
 	}
+
+	Project.prototype.addProject = async request => {
+		await Project.create(request)
+	}
+
 	return Project
 }

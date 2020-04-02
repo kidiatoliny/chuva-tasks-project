@@ -1,4 +1,4 @@
-const { sequelize } = require('./../app/models')
+const { sequelize } = require('./../models')
 
 module.exports = () => {
 	Object.keys(sequelize.models).map(key => {

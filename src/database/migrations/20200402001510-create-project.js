@@ -17,17 +17,23 @@ module.exports = {
 			title: {
 				type: Sequelize.STRING,
 				allowNull: false,
-				unique: true,
 			},
 			description: {
-				type: Sequelize.STRING,
-			},
-			user_id: {
-				type: Sequelize.STRING,
+				type: Sequelize.TEXT,
 				allowNull: false,
 			},
+			user_id: {
+				type: Sequelize.INTEGER,
+				allowNull: false,
+				references: {
+					model: 'users',
+					key: 'id',
+				},
+				onUpdate: 'CASCADE',
+				ondeDelete: 'CASCADE',
+			},
 			status: {
-				type: Sequelize.STRING,
+				type: Sequelize.BOOLEAN,
 			},
 			start: {
 				type: Sequelize.DATE,

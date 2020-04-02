@@ -6,8 +6,17 @@
  */
 
 const router = require('express').Router()
-const { ProjectController } = require('./../app/controllers')
+const { ProjectController } = require('./../../app/controllers')
 
-router.post('/project/add', ProjectController.store)
+router
+	.route('/user/:user_id/projects')
+	.get(ProjectController.index)
+	.post(ProjectController.store)
+
+router
+	.route('/user/:user_id/project/:project_id')
+	.get(ProjectController.show)
+	.delete(ProjectController.delete)
+	.patch(ProjectController.update)
 
 module.exports = router

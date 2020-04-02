@@ -1,7 +1,9 @@
 const request = require('supertest')
 const app = require('../../app')
-const factory = require('./../../helppers/factory')
-const truncate = require('./../../helppers/truncate')
+const bcrypt = require('bcryptjs')
+const factory = require('./../../app/helppers/factory')
+const truncate = require('./../../app/helppers/truncate')
+
 describe('Login', () => {
 	beforeEach(async () => {
 		await truncate()

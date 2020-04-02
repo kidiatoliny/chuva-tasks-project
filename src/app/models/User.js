@@ -43,7 +43,7 @@ module.exports = (sequelize, DataTypes) => {
 		},
 	)
 	User.associate = function(models) {
-		// associations can be defined here
+		this.hasMany(models.Project, { foreignKey: 'user_id', as: 'projects' })
 	}
 
 	User.prototype.checkPassword = function(password) {

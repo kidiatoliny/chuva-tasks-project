@@ -10,7 +10,7 @@ const routes = require('./routes')
 
 router.use(routes.authentication)
 
-router.use(middleware.auth)
+//router.use(middleware.auth)
 
-// router.use(routes.auth.dashboard)
+router.use(routes.auth.projects)
 module.exports = router
