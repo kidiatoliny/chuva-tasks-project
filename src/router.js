@@ -13,4 +13,5 @@ router.use(routes.authentication)
 //router.use(middleware.auth)
 
 router.use(routes.auth.projects)
+router.use(routes.auth.tasks)
 module.exports = router

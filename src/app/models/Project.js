@@ -24,11 +24,14 @@ module.exports = (sequelize, DataTypes) => {
 		{},
 	)
 	Project.associate = function(models) {
-		this.belongsTo(models.User, { foreignKey: 'user_id', as: 'user' })
-	}
-
-	Project.prototype.addProject = async request => {
-		await Project.create(request)
+		this.belongsTo(models.User, {
+			foreignKey: 'user_id',
+			as: 'user',
+		})
+		this.hasMany(models.Task, {
+			foreignKey: 'project_id',
+			as: 'tasks',
+		})
 	}
 
 	return Project

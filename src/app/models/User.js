@@ -43,7 +43,18 @@ module.exports = (sequelize, DataTypes) => {
 		},
 	)
 	User.associate = function(models) {
-		this.hasMany(models.Project, { foreignKey: 'user_id', as: 'projects' })
+		this.hasMany(models.Project, {
+			foreignKey: 'user_id',
+			as: 'projects',
+		})
+		this.hasMany(models.Task, {
+			foreignKey: 'user_id',
+			as: 'tasks',
+		})
+		this.hasMany(models.Task, {
+			foreignKey: 'assign_to',
+			as: 'assigns',
+		})
 	}
 
 	User.prototype.checkPassword = function(password) {
@@ -51,7 +62,12 @@ module.exports = (sequelize, DataTypes) => {
 	}
 
 	User.prototype.generateToken = function() {
-		return jwt.sign({ id: this.id }, process.env.APP_SECRET)
+		return jwt.sign(
+			{
+				id: this.id,
+			},
+			process.env.APP_SECRET,
+		)
 	}
 
 	return User

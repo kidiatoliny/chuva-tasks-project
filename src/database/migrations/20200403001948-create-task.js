@@ -1,13 +1,13 @@
 /**
  * javascript comment
  * @Author: kidiatoliny
- * @Date: 2020-04-01 23:17:07
- * @Desc: Project fields
+ * @Date: 2020-04-02 23:44:33
+ * @Desc:
  */
 'use strict'
 module.exports = {
 	up: (queryInterface, Sequelize) => {
-		return queryInterface.createTable('projects', {
+		return queryInterface.createTable('tasks', {
 			id: {
 				allowNull: false,
 				autoIncrement: true,
@@ -18,9 +18,19 @@ module.exports = {
 				type: Sequelize.STRING,
 				allowNull: false,
 			},
-			description: {
-				type: Sequelize.TEXT,
+			assign_to: {
+				type: Sequelize.INTEGER,
 				allowNull: false,
+			},
+			project_id: {
+				type: Sequelize.INTEGER,
+				allowNull: false,
+				references: {
+					model: 'projects',
+					key: 'id',
+				},
+				onUpdate: 'CASCADE',
+				onDelete: 'CASCADE',
 			},
 			user_id: {
 				type: Sequelize.INTEGER,
@@ -33,14 +43,8 @@ module.exports = {
 				onDelete: 'CASCADE',
 			},
 			status: {
-				type: Sequelize.BOOLEAN,
-			},
-			start: {
-				type: Sequelize.DATE,
+				type: Sequelize.STRING,
 				allowNull: false,
-			},
-			end: {
-				type: Sequelize.DATE,
 			},
 			created_at: {
 				allowNull: false,
@@ -53,6 +57,6 @@ module.exports = {
 		})
 	},
 	down: (queryInterface, Sequelize) => {
-		return queryInterface.dropTable('projects')
+		return queryInterface.dropTable('tasks')
 	},
 }
