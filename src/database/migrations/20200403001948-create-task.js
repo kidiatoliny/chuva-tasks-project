@@ -21,6 +21,12 @@ module.exports = {
 			assign_to: {
 				type: Sequelize.INTEGER,
 				allowNull: false,
+				references: {
+					model: 'users',
+					key: 'id',
+				},
+				onUpdate: 'CASCADE',
+				onDelete: 'CASCADE',
 			},
 			project_id: {
 				type: Sequelize.INTEGER,

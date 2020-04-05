@@ -30,18 +30,18 @@ module.exports = (sequelize, DataTypes) => {
 		},
 		{},
 	)
-	Task.associate = function(models) {
+	Task.associate = function (models) {
 		this.belongsTo(models.Project, {
 			foreignKey: 'project_id',
 			as: 'project',
 		})
 		this.belongsTo(models.User, {
 			foreignKey: 'user_id',
-			as: 'user',
+			as: 'author',
 		})
 		this.belongsTo(models.User, {
 			foreignKey: 'assign_to',
-			as: 'assign',
+			as: 'assignTo',
 		})
 	}
 	return Task

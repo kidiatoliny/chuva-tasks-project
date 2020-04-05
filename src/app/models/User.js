@@ -34,7 +34,7 @@ module.exports = (sequelize, DataTypes) => {
 		},
 		{
 			hooks: {
-				beforeSave: async user => {
+				beforeSave: async (user) => {
 					if (user.password) {
 						user.password_hash = await bcrypt.hash(user.password, 10)
 					}
@@ -42,7 +42,7 @@ module.exports = (sequelize, DataTypes) => {
 			},
 		},
 	)
-	User.associate = function(models) {
+	User.associate = function (models) {
 		this.hasMany(models.Project, {
 			foreignKey: 'user_id',
 			as: 'projects',
@@ -57,11 +57,11 @@ module.exports = (sequelize, DataTypes) => {
 		})
 	}
 
-	User.prototype.checkPassword = function(password) {
+	User.prototype.checkPassword = function (password) {
 		return bcrypt.compare(password, this.password_hash)
 	}
 
-	User.prototype.generateToken = function() {
+	User.prototype.generateToken = function () {
 		return jwt.sign(
 			{
 				id: this.id,

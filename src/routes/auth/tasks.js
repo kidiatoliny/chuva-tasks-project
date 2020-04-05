@@ -13,10 +13,10 @@ router
 	.get(TaskController.index)
 	.post(TaskController.store)
 
-// router
-// 	.route('/user/:user_id/Task/:Task_id')
-// 	.get(TaskController.show)
-// 	.delete(TaskController.delete)
-// 	.patch(TaskController.update)
+router
+	.route('/user/:user_id/project/:project_id/task/:task_id')
+	.get(TaskController.show)
+	.delete(TaskController.delete)
+	.patch(TaskController.update)
 
 module.exports = router

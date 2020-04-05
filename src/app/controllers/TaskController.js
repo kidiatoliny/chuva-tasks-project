@@ -42,14 +42,17 @@ class AuthController {
 	}
 
 	async show(req, res) {
-		const { user_id, project_id } = req.params
+		const { user_id, project_id, task_id } = req.params
 		try {
-			const project = await Project.findByPk(project_id, {
-				include: { association: 'user' },
+			const task = await Task.findByPk(task_id, {
+				include: [
+					{ association: 'project' },
+					{ association: 'author' },
+					{ association: 'assignTo' },
+				],
 			})
-
-			if (user_id == project.user.id) {
-				return res.status(200).json(project.user)
+			if (task) {
+				return res.status(200).json(task)
 			} else return res.status(403).send(err)
 		} catch (err) {
 			return res.status(401).send(fieldsError(err))
@@ -57,13 +60,13 @@ class AuthController {
 	}
 
 	async delete(req, res) {
-		const { user_id, project_id } = req.params
+		const { user_id, project_id, task_id } = req.params
+		const { title, status, assing_to } = req.body
 		try {
-			const project = await Project.findByPk(project_id)
-
-			if (user_id == project.user_id) {
-				await Project.destroy({ where: { id: project_id } })
-				return res.status(200).send({ message: 'Project Deleted' })
+			const task = await Task.findByPk(task_id)
+			if (project_id == task.project_id) {
+				await Task.destroy({ where: { id: task_id } })
+				return res.status(200).send({ message: 'Task Deleted' })
 			} else return res.status(403).send(err)
 		} catch (err) {
 			return res.status(401).send(fieldsError(err))
@@ -71,16 +74,21 @@ class AuthController {
 	}
 
 	async update(req, res) {
-		const { user_id, project_id } = req.params
-
-		const { title, end, status } = req.body
+		const { user_id, project_id, task_id } = req.params
+		const { title, status, assing_to } = req.body
 		try {
+			const task = await Task.findByPk(task_id)
 			const project = await Project.findByPk(project_id)
 
-			if (user_id == project.user_id) {
-				await Project.update(req.body, { where: { id: project_id } })
-				return res.status(200).send({ message: 'Project Update' })
-			} else return res.status(403).send({ error: 'Forbidden' })
+			if (task && project) {
+				if (project_id == task.project_id) {
+					await Task.update(req.body, { where: { id: task_id } })
+					return res.status(200).send({ message: 'Task Update' })
+				}
+				return res.status(403).send(err)
+			}
+
+			return res.status(403).send(err)
 		} catch (err) {
 			return res.status(401).send(fieldsError(err))
 		}
