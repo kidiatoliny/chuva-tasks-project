@@ -10,11 +10,11 @@ require('dotenv').config({
 
 module.exports = {
 	dialect: process.env.DB_DIALECT || 'postgres',
-	host: process.env.DB_HOST,
-	port: process.env.DB_PORT,
+	host: process.env.DB_HOST || 'localhost',
+	port: process.env.DB_PORT || '5432',
 	username: process.env.DB_USER || 'postgres',
-	password: process.env.DB_PASSWORD,
-	database: process.env.DB_NAME,
+	password: process.env.DB_PASSWORD || 'root',
+	database: process.env.DB_NAME || 'tasks',
 	storage: './src/tests/database.sqlite',
 	logging: false,
 	define: {

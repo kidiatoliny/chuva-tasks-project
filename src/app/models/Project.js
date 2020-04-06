@@ -34,5 +34,52 @@ module.exports = (sequelize, DataTypes) => {
 		})
 	}
 
+	Project.prototype.createProject = async (body, res) => {
+		const project = await Project.create(body)
+		return res.status(200).send(project)
+	}
+
+	Project.prototype.showProject = async (user_id, project_id, res) => {
+		let project = await Project.findByPk(project_id, {
+			include: [{ association: 'user' }, { association: 'tasks' }],
+		})
+		if (user_id == project.user.id) {
+			return res.status(200).send(project)
+		} else
+			return res
+				.status(403)
+				.send({ error: "You don't have permitions to see this project" })
+	}
+
+	Project.prototype.deleteProject = async (user_id, project_id, res) => {
+		let project = await Project.findByPk(project_id, {
+			include: { association: 'user' },
+		})
+		if (user_id == project.user.id) {
+			await Project.destroy({ where: { id: project_id } })
+			return res.status(200).send({ message: 'Project Deleted' })
+		} else
+			return res
+				.status(403)
+				.send({ error: "You don't have permitions to delete this project" })
+	}
+
+	Project.prototype.updateProject = async function (
+		user_id,
+		project_id,
+		body,
+		res,
+	) {
+		const project = await Project.findByPk(project_id)
+
+		if (user_id == project.user_id) {
+			await Project.update(body, { where: { id: project_id } })
+			return res.status(200).send({ message: 'Project Update' })
+		} else
+			return res
+				.status(403)
+				.send({ error: "You don't have permitions to Update this project" })
+	}
+
 	return Project
 }

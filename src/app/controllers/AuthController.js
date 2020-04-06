@@ -7,6 +7,7 @@
 
 const { User } = require('./../models')
 const jwt = require('jsonwebtoken')
+const userP = new User()
 class AuthController {
 	async register(req, res) {
 		const { email, name, password } = req.body
@@ -25,12 +26,7 @@ class AuthController {
 						.send({ error: 'Email already been registered' })
 
 				if (name && password) {
-					const user = await User.create(req.body)
-					return res.status(200).json({
-						name: user.name,
-						email: user.email,
-						token: user.generateToken(),
-					})
+					userP.register(req.body, res)
 				}
 			}
 		} catch (error) {

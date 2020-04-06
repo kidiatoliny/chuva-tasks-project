@@ -57,8 +57,19 @@ module.exports = (sequelize, DataTypes) => {
 		})
 	}
 
+	User.prototype.register = async (body, res) => {
+		const user = await User.create(body)
+		return res.status(200).json(user)
+	}
+
 	User.prototype.checkPassword = function (password) {
 		return bcrypt.compare(password, this.password_hash)
+	}
+
+	User.prototype.notFound = async () => {
+		return res.status(403).send({
+			error: 'Please authenticate in order to create a Project',
+		})
 	}
 
 	User.prototype.generateToken = function () {

@@ -4,9 +4,11 @@
  * @Date: 2020-04-01 23:19:27
  * @Desc: Project Controller
  */
-const { User } = require('./../models')
-const { Project } = require('./../models')
+const { User, Project } = require('./../models')
+const userValidate = require('./../helppers/validators/UserValidate')
 const { fieldsError } = require('../helppers/errors')
+
+let project = new Project()
 
 class AuthController {
 	async index(req, res) {
@@ -23,17 +25,11 @@ class AuthController {
 	}
 
 	async store(req, res) {
-		const { user_id } = req.params
-		const user = await User.findByPk(user_id)
+		let { user_id } = req.params
+		let user = await User.findByPk(user_id)
 		try {
-			if (!user) {
-				return res.status(403).send({
-					error: 'User not found',
-				})
-			}
-
-			const project = await Project.create(req.body)
-			return res.status(200).json(project)
+			userValidate.isNotExist(user, res)
+			project.createProject(req.body, res)
 		} catch (err) {
 			return res.status(401).send(fieldsError(err))
 		}
@@ -42,13 +38,7 @@ class AuthController {
 	async show(req, res) {
 		const { user_id, project_id } = req.params
 		try {
-			const project = await Project.findByPk(project_id, {
-				include: [{ association: 'user' }, { association: 'tasks' }],
-			})
-
-			if (user_id == project.user.id) {
-				return res.status(200).json(project)
-			} else return res.status(403).send(err)
+			project.showProject(user_id, project_id, res)
 		} catch (err) {
 			return res.status(401).send(fieldsError(err))
 		}
@@ -57,12 +47,7 @@ class AuthController {
 	async delete(req, res) {
 		const { user_id, project_id } = req.params
 		try {
-			const project = await Project.findByPk(project_id)
-
-			if (user_id == project.user_id) {
-				await Project.destroy({ where: { id: project_id } })
-				return res.status(200).send({ message: 'Project Deleted' })
-			} else return res.status(403).send(err)
+			project.deleteProject(user_id, project_id, res)
 		} catch (err) {
 			return res.status(401).send(fieldsError(err))
 		}
@@ -73,12 +58,7 @@ class AuthController {
 
 		const { title, end, status } = req.body
 		try {
-			const project = await Project.findByPk(project_id)
-
-			if (user_id == project.user_id) {
-				await Project.update(req.body, { where: { id: project_id } })
-				return res.status(200).send({ message: 'Project Update' })
-			} else return res.status(403).send({ error: 'Forbidden' })
+			project.updateProject(user_id, project_id, req.body, res)
 		} catch (err) {
 			return res.status(401).send(fieldsError(err))
 		}
